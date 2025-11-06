@@ -127,7 +127,5 @@ pip install numpy pandas scikit-learn xgboost streamlit shap imbalanced-learn
 ---
 
 ## Author
-Developed by **[Abhinav Harbola]**  
+Developed by **Abhinav Harbola**  
 Data Science | Machine Learning | Explainable AI
-
-> ⚡ *Detect fraud. Explain predictions. Build trust.*
