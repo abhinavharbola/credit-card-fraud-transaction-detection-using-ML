@@ -173,7 +173,7 @@ def train_and_save(random_state: int = 42):
     with open(BASE_DIR / "feature_names.json", "w") as f:
         json.dump(feature_names_transformed, f)
 
-    # --- NEW SHAP SECTION ---
+    # --- SHAP SECTION ---
     print("Creating SHAP background dataset...")
     # Sample 100 data points from the scaled training set (pre-SMOTE) for SHAP background
     # We use X_train_scaled as it represents the real data distribution
@@ -184,7 +184,7 @@ def train_and_save(random_state: int = 42):
     
     # Save the background dataset
     np.save(BASE_DIR / "shap_background.npy", shap_background)
-    # --- END NEW SHAP SECTION ---
+    # --- END SHAP SECTION ---
 
     print("\nTraining completed successfully!\n")
 
