@@ -60,7 +60,7 @@ def load_artifacts():
     artifacts["model_path"] = BASE / "fraud_model.pkl"
     artifacts["scaler_path"] = BASE / "scaler.pkl"
     artifacts["feature_path"] = BASE / "feature_names.json"
-    artifacts["background_path"] = BASE / "shap_background.npy"  # <-- New artifact
+    artifacts["background_path"] = BASE / "shap_background.npy"
 
     # Load model & scaler
     if artifacts["model_path"].exists():
@@ -101,7 +101,7 @@ def load_artifacts():
 
     return artifacts
 
-# --- NEW: SHAP Explainer Loader ---
+# ----- SHAP Explainer Loader -----
 @st.cache_resource
 def load_explainer(_model, _background_data, _feature_names):
     """Create and cache the SHAP TreeExplainer."""
@@ -116,9 +116,7 @@ def load_explainer(_model, _background_data, _feature_names):
     except Exception as e:
         st.error(f"Failed to initialize SHAP explainer: {e}")
         return None
-# --- End NEW Section ---
-
-
+        
 art = load_artifacts()
 model = art["model"]
 scaler = art["scaler"]
@@ -178,17 +176,17 @@ if uploaded is not None:
             preds = model.predict(X_scaled)
             probs = model.predict_proba(X_scaled)[:, 1]
 
-            results = user_df.copy() # Start with the *original* uploaded data
+            results = user_df.copy()
             results["Predicted Class"] = preds
             results["Fraud Probability"] = probs
             results["Predicted Class"] = results["Predicted Class"].map({0: "Legit", 1: "Fraud"})
 
             # Create tabs for results
             tab_summary, tab_data, tab_model, tab_explain = st.tabs([
-                "📊 Prediction Summary", 
-                "📄 Full Data Preview", 
-                "🤖 Model Insights", 
-                "🧠 SHAP Explainability"  # <-- New Tab
+                "Prediction Summary", 
+                "Full Data Preview", 
+                "Model Insights", 
+                "SHAP Explainability"
             ])
 
             with tab_summary:
