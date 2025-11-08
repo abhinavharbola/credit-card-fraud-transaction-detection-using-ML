@@ -55,7 +55,7 @@ def clean_numeric_df(df, cols=None):
 # --- End of helpers ---
 
 def train_and_save(random_state: int = 42):
-    print("📂 Loading dataset...")
+    print("Loading dataset...")
     if not DATA_PATH.exists():
         print(f"❌ Error: {DATA_PATH} not found.")
         print("Please download 'creditcard.csv' from Kaggle and place it in the same directory.")
@@ -63,12 +63,12 @@ def train_and_save(random_state: int = 42):
         
     df = pd.read_csv(DATA_PATH)
     
-    print("🧼 Cleaning raw dataset...")
+    print("Cleaning raw dataset...")
     feature_cols = [col for col in df.columns if col != 'Class']
     df = clean_numeric_df(df, cols=feature_cols)
     
     if SAMPLE_N is not None and len(df) > SAMPLE_N:
-        print(f"🔎 Sampling {SAMPLE_N} total rows stratified by target to speed up training...")
+        print(f"Sampling {SAMPLE_N} total rows stratified by target to speed up training...")
         # Use train_test_split to sample stratified
         df, _ = train_test_split(
             df, 
@@ -85,7 +85,7 @@ def train_and_save(random_state: int = 42):
     feature_names = list(X.columns)
     # Ensure 'Time' and 'Amount' are present, even if V features are dynamic
     if 'Time' not in feature_names or 'Amount' not in feature_names:
-        print("❌ Error: 'Time' or 'Amount' columns not found in dataset.")
+        print("Error: 'Time' or 'Amount' columns not found in dataset.")
         return
         
     v_features = [col for col in feature_names if col.startswith('V')]
@@ -142,7 +142,7 @@ def train_and_save(random_state: int = 42):
 
         X_train_res, y_train_res = sm.fit_resample(X_train_scaled, y_train)
 
-    print("⚙️ Training XGBoost model...")
+    print("Training XGBoost model...")
     # Calculate scale_pos_weight for imbalance
     scale_pos_weight = (y_train == 0).sum() / (y_train == 1).sum() if (y_train == 1).sum() > 0 else 1
 
@@ -157,7 +157,7 @@ def train_and_save(random_state: int = 42):
     )
     model.fit(X_train_res, y_train_res)
 
-    print("📈 Evaluating on test set...")
+    print("Evaluating on test set...")
     y_pred = model.predict(X_test_scaled)
     y_proba = model.predict_proba(X_test_scaled)[:,1]
     print(classification_report(y_test, y_pred, digits=4))
@@ -166,7 +166,7 @@ def train_and_save(random_state: int = 42):
     except Exception:
         pass
 
-    print("💾 Saving artifacts...")
+    print("Saving artifacts...")
     joblib.dump(model, BASE_DIR / "fraud_model.pkl")
     joblib.dump(ct, BASE_DIR / "scaler.pkl")
     # Save the *transformed* feature names order, which app.py expects
@@ -174,7 +174,7 @@ def train_and_save(random_state: int = 42):
         json.dump(feature_names_transformed, f)
 
     # --- NEW SHAP SECTION ---
-    print("📦 Creating SHAP background dataset...")
+    print("Creating SHAP background dataset...")
     # Sample 100 data points from the scaled training set (pre-SMOTE) for SHAP background
     # We use X_train_scaled as it represents the real data distribution
     if len(X_train_scaled) > 100:
@@ -186,7 +186,7 @@ def train_and_save(random_state: int = 42):
     np.save(BASE_DIR / "shap_background.npy", shap_background)
     # --- END NEW SHAP SECTION ---
 
-    print("\n✅ Training completed successfully!\n")
+    print("\nTraining completed successfully!\n")
 
 if __name__ == "__main__":
     train_and_save()
