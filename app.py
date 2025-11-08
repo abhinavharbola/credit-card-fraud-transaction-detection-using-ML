@@ -311,7 +311,6 @@ if uploaded is not None:
                         cm_fig.update_layout(title="Confusion Matrix")
                         st.plotly_chart(cm_fig, width='stretch')
                         
-                        # --- THIS IS THE CHANGED SECTION ---
                         # Display classification report as a formatted DataFrame
                         st.subheader("Classification Report")
                         report_dict = classification_report(true_labels, results["Predicted Class"], labels=["Legit", "Fraud"], output_dict=True)
@@ -336,12 +335,11 @@ if uploaded is not None:
                             'recall': '{:.4f}',
                             'f1-score': '{:.4f}',
                         }), width='stretch')
-                        # --- END OF CHANGED SECTION ---
 
                     except Exception as e:
                         st.warning(f"Could not compute confusion matrix. Make sure 'Class' column has 0/1 or 'Legit'/'Fraud' values. Error: {e}")
             
-            # --- NEW SHAP EXPLAINABILITY TAB ---
+            # ----- SHAP EXPLAINABILITY TAB -----
             with tab_explain:
                 if explainer is None:
                     st.error("SHAP Explainer could not be loaded. Please ensure all artifacts are present and re-run train_model.py.")
@@ -357,7 +355,6 @@ if uploaded is not None:
                     - **Blue bars/features** decrease the probability of fraud (i.e., point towards 'Legit').
                     """)
 
-                    # --- REMOVED Local Explanation Section ---
                     max_slider = min(len(X_scaled) - 1, 500)
                     if len(X_scaled) > 500:
                         st.warning(f"Displaying explanations for the first 500 transactions. Your file has {len(X_scaled)} rows.")
@@ -367,7 +364,6 @@ if uploaded is not None:
                     st.write("This plot shows the average impact of each feature on *increasing the probability of fraud*.")
                     
                     try:
-                        # --- FIX: Re-calculate values if they weren't calculated in the 'local' section ---
                         # (e.g., if slider wasn't used, though it defaults to 0)
                         # This ensures 'shap_explanations' exists.
                         if 'shap_explanations' not in locals():
@@ -394,6 +390,6 @@ if uploaded is not None:
                     
                     except Exception as e:
                         st.error(f"Error generating global SHAP plots: {e}")
-            # --- END NEW SHAP TAB ---
+            # ----- END SHAP TAB -----
 
 st.caption("Credit Card Fraud Detector | Built with XGBoost, SMOTE, and Streamlit")
