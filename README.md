@@ -97,14 +97,14 @@ Your browser will automatically open the application dashboard.
 
 ## SHAP Explainability Dashboard
 
-The **SHAP** feature adds a new tab for model interpretability — essential for trustworthy AI.
+The **SHAP** feature adds a new tab for model interpretability, essential for trustworthy AI.
 
 When you upload a file, you can:
 
 ### Analyze Single Transactions
 - Use a slider to select a transaction (from the first 500).  
 - View:
-  - **Force Plot** → shows which features push the model toward *Fraud* or *Legit*.
+  - **Force Plot** → shows which features push the model toward **Fraud** or **Legit**.
   - **Waterfall Plot** → breaks down each feature’s contribution to the final decision.
 
 ### Global Feature Importance
@@ -129,3 +129,4 @@ pip install numpy pandas scikit-learn xgboost streamlit shap imbalanced-learn
 ## Author
 Developed by **Abhinav Harbola**  
 Data Science | Machine Learning | Explainable AI
+
